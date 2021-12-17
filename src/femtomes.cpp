@@ -72,7 +72,7 @@
 
 
 GPSDriverFemto::GPSDriverFemto(GPSCallbackPtr callback, void *callback_user,
-			       struct sensor_gps_s *gps_position,
+			       struct vehicle_gps_position_s *gps_position,
 			       satellite_info_s *satellite_info,
 			       float heading_offset) :
 	GPSBaseStationSupport(callback, callback_user),
@@ -149,7 +149,7 @@ int GPSDriverFemto::handleMessage(int len)
 			_satellite_info->elevation[i] = uav_status->sat_status[i].ele;
 			_satellite_info->azimuth[i] = uav_status->sat_status[i].azi;
 			_satellite_info->snr[i] = uav_status->sat_status[i].cn0;
-			_satellite_info->prn[i] = uav_status->sat_status[i].system_id;
+		//	_satellite_info->prn[i] = uav_status->sat_status[i].system_id;
 		}
 
 		ret = 2;

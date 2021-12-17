@@ -43,6 +43,7 @@
 #include "sbf.h"
 #include <string.h>
 #include <math.h>
+#include <uORB/topics/vehicle_gps_position.h>
 
 #define SBF_CONFIG_TIMEOUT    500      // ms, timeout for waiting ACK
 #define SBF_PACKET_TIMEOUT    2        // ms, if now data during this delay assume that full update received
@@ -57,7 +58,7 @@
 #define SBF_DEBUG(...)       {/*GPS_WARN(__VA_ARGS__);*/}
 
 GPSDriverSBF::GPSDriverSBF(GPSCallbackPtr callback, void *callback_user,
-			   sensor_gps_s *gps_position,
+			   vehicle_gps_position_s *gps_position,
 			   satellite_info_s *satellite_info,
 			   uint8_t dynamic_model) :
 	GPSBaseStationSupport(callback, callback_user),

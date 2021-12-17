@@ -42,6 +42,7 @@
 
 #include "gps_helper.h"
 #include "../../definitions.h"
+#include <uORB/topics/vehicle_gps_position.h>
 
 #define MTK_SYNC1_V16 0xd0
 #define MTK_SYNC1_V19 0xd1
@@ -88,7 +89,7 @@ typedef struct {
 class GPSDriverMTK : public GPSHelper
 {
 public:
-	GPSDriverMTK(GPSCallbackPtr callback, void *callback_user, sensor_gps_s *gps_position);
+	GPSDriverMTK(GPSCallbackPtr callback, void *callback_user, vehicle_gps_position_s *gps_position);
 	virtual ~GPSDriverMTK() = default;
 
 	int receive(unsigned timeout) override;
@@ -115,7 +116,7 @@ private:
 	 */
 	void addByteToChecksum(uint8_t);
 
-	sensor_gps_s *_gps_position {nullptr};
+	vehicle_gps_position_s *_gps_position {nullptr};
 	mtk_decode_state_t _decode_state{MTK_DECODE_UNINIT};
 	uint8_t _mtk_revision{0};
 	unsigned _rx_count{};

@@ -41,6 +41,7 @@
 
 #include "gps_helper.h"
 #include "../../definitions.h"
+#include <uORB/topics/vehicle_gps_position.h>
 
 // Emlid documentation
 //   https://docs.emlid.com/reachm-plus/
@@ -140,7 +141,7 @@ class GPSDriverEmlidReach : public GPSHelper
 {
 public:
 	GPSDriverEmlidReach(GPSCallbackPtr callback, void *callback_user,
-			    sensor_gps_s *gps_position,
+			    vehicle_gps_position_s *gps_position,
 			    satellite_info_s *satellite_info
 			   );
 
@@ -175,7 +176,7 @@ private:
 	uint8_t _erb_checksum_cnt{};
 
 	/** Pointer provided by caller, ie gps.cpp */
-	sensor_gps_s *_gps_position {nullptr};
+	vehicle_gps_position_s *_gps_position {nullptr};
 	/** Pointer provided by caller, gps.cpp */
 	satellite_info_s *_satellite_info {nullptr};
 

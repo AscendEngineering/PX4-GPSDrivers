@@ -47,7 +47,7 @@
 #define ASH_DEBUG(...)		{/*GPS_WARN(__VA_ARGS__);*/}
 
 GPSDriverAshtech::GPSDriverAshtech(GPSCallbackPtr callback, void *callback_user,
-				   sensor_gps_s *gps_position, satellite_info_s *satellite_info,
+				   vehicle_gps_position_s *gps_position, satellite_info_s *satellite_info,
 				   float heading_offset) :
 	GPSBaseStationSupport(callback, callback_user),
 	_heading_offset(heading_offset),
@@ -559,7 +559,7 @@ int GPSDriverAshtech::handleMessage(int len)
 			int elevation;
 			int azimuth;
 			int snr;
-			int prn;
+			//int prn;
 		} sat[4];
 
 		memset(sat, 0, sizeof(sat));
@@ -580,7 +580,7 @@ int GPSDriverAshtech::handleMessage(int len)
 			memset(_satellite_info->elevation, 0, sizeof(_satellite_info->elevation));
 			memset(_satellite_info->azimuth,   0, sizeof(_satellite_info->azimuth));
 			memset(_satellite_info->snr,       0, sizeof(_satellite_info->snr));
-			memset(_satellite_info->prn,       0, sizeof(_satellite_info->prn));
+			//memset(_satellite_info->prn,       0, sizeof(_satellite_info->prn));
 		}
 
 		int end = 4;
@@ -611,7 +611,7 @@ int GPSDriverAshtech::handleMessage(int len)
 				_satellite_info->elevation[y + (this_msg_num - 1) * 4] = sat[y].elevation;
 				_satellite_info->azimuth[y + (this_msg_num - 1) * 4]   = sat[y].azimuth;
 				_satellite_info->snr[y + (this_msg_num - 1) * 4]       = sat[y].snr;
-				_satellite_info->prn[y + (this_msg_num - 1) * 4]       = sat[y].prn;
+				//_satellite_info->prn[y + (this_msg_num - 1) * 4]       = sat[y].prn;
 			}
 		}
 

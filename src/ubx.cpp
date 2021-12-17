@@ -68,7 +68,7 @@
 #define UBX_DEBUG(...)        {/*GPS_WARN(__VA_ARGS__);*/}
 
 GPSDriverUBX::GPSDriverUBX(Interface gpsInterface, GPSCallbackPtr callback, void *callback_user,
-			   sensor_gps_s *gps_position, satellite_info_s *satellite_info, uint8_t dynamic_model,
+			   vehicle_gps_position_s *gps_position, satellite_info_s *satellite_info, uint8_t dynamic_model,
 			   float heading_offset, UBXMode mode) :
 	GPSBaseStationSupport(callback, callback_user),
 	_interface(gpsInterface),
@@ -1580,15 +1580,15 @@ GPSDriverUBX::payloadRxAddNavSat(const uint8_t b)
 				_satellite_info->azimuth[sat_index]	  = static_cast<uint8_t>(static_cast<float>(_buf.payload_rx_nav_sat_part2.azim) *
 						255.0f / 360.0f);
 				_satellite_info->snr[sat_index]		  = static_cast<uint8_t>(_buf.payload_rx_nav_sat_part2.cno);
-				_satellite_info->prn[sat_index]		  = svinfo_svid;
-				UBX_TRACE_SVINFO("SAT #%02u  svid %3u  used %u  elevation %3u  azimuth %3u  snr %3u  prn %3u",
+				//_satellite_info->prn[sat_index]		  = svinfo_svid;
+				UBX_TRACE_SVINFO("SAT #%02u  svid %3u  used %u  elevation %3u  azimuth %3u  snr %3u",
 						 static_cast<unsigned>(sat_index + 1),
 						 static_cast<unsigned>(_satellite_info->svid[sat_index]),
 						 static_cast<unsigned>(_satellite_info->used[sat_index]),
 						 static_cast<unsigned>(_satellite_info->elevation[sat_index]),
 						 static_cast<unsigned>(_satellite_info->azimuth[sat_index]),
 						 static_cast<unsigned>(_satellite_info->snr[sat_index]),
-						 static_cast<unsigned>(_satellite_info->prn[sat_index])
+						// static_cast<unsigned>(_satellite_info->prn[sat_index])
 						);
 			}
 		}
@@ -1639,16 +1639,16 @@ GPSDriverUBX::payloadRxAddNavSvinfo(const uint8_t b)
 				_satellite_info->azimuth[sat_index]   = static_cast<uint8_t>(static_cast<float>(_buf.payload_rx_nav_svinfo_part2.azim) *
 									255.0f / 360.0f);
 				_satellite_info->snr[sat_index]       = static_cast<uint8_t>(_buf.payload_rx_nav_svinfo_part2.cno);
-				_satellite_info->prn[sat_index]       = static_cast<uint8_t>(_buf.payload_rx_nav_svinfo_part2.svid);
+				//_satellite_info->prn[sat_index]       = static_cast<uint8_t>(_buf.payload_rx_nav_svinfo_part2.svid);
 
-				UBX_TRACE_SVINFO("SVINFO #%02u  svid %3u  used %u  elevation %3u  azimuth %3u  snr %3u  prn %3u",
+				UBX_TRACE_SVINFO("SVINFO #%02u  svid %3u  used %u  elevation %3u  azimuth %3u  snr %3u" ,
 						 static_cast<unsigned>(sat_index + 1),
 						 static_cast<unsigned>(_satellite_info->svid[sat_index]),
 						 static_cast<unsigned>(_satellite_info->used[sat_index]),
 						 static_cast<unsigned>(_satellite_info->elevation[sat_index]),
 						 static_cast<unsigned>(_satellite_info->azimuth[sat_index]),
 						 static_cast<unsigned>(_satellite_info->snr[sat_index]),
-						 static_cast<unsigned>(_satellite_info->prn[sat_index])
+						// static_cast<unsigned>(_satellite_info->prn[sat_index])
 						);
 			}
 		}
@@ -2030,7 +2030,7 @@ GPSDriverUBX::payloadRxDone()
 
 				heading_acc *= M_PI_F / 180.0f; // deg to rad, now in range [0, 2pi]
 
-				_gps_position->heading_accuracy = heading_acc;
+				//_gps_position->heading_accuracy = heading_acc;
 
 				UBX_DEBUG("Heading: %.3f rad, acc: %.1f deg, relLen: %.1f cm, relAcc: %.1f cm, valid: %i %i", (double)heading,
 					  (double)heading_acc, (double)rel_length, (double)rel_length_acc, heading_valid, rel_pos_valid);
@@ -2059,7 +2059,7 @@ GPSDriverUBX::payloadRxDone()
 
 		case sizeof(ubx_payload_rx_mon_hw_ubx6_t):	/* u-blox 6 msg format */
 			_gps_position->noise_per_ms		= _buf.payload_rx_mon_hw_ubx6.noisePerMS;
-			_gps_position->automatic_gain_control   = _buf.payload_rx_mon_hw_ubx6.agcCnt;
+			//_gps_position->automatic_gain_control   = _buf.payload_rx_mon_hw_ubx6.agcCnt;
 			_gps_position->jamming_indicator	= _buf.payload_rx_mon_hw_ubx6.jamInd;
 
 			ret = 1;
@@ -2067,7 +2067,7 @@ GPSDriverUBX::payloadRxDone()
 
 		case sizeof(ubx_payload_rx_mon_hw_ubx7_t):	/* u-blox 7+ msg format */
 			_gps_position->noise_per_ms		= _buf.payload_rx_mon_hw_ubx7.noisePerMS;
-			_gps_position->automatic_gain_control   = _buf.payload_rx_mon_hw_ubx7.agcCnt;
+			//_gps_position->automatic_gain_control   = _buf.payload_rx_mon_hw_ubx7.agcCnt;
 			_gps_position->jamming_indicator	= _buf.payload_rx_mon_hw_ubx7.jamInd;
 
 			ret = 1;
@@ -2085,7 +2085,7 @@ GPSDriverUBX::payloadRxDone()
 
 		_gps_position->noise_per_ms		= _buf.payload_rx_mon_rf.block[0].noisePerMS;
 		_gps_position->jamming_indicator	= _buf.payload_rx_mon_rf.block[0].jamInd;
-		_gps_position->jamming_state		= _buf.payload_rx_mon_rf.block[0].flags;
+		//_gps_position->jamming_state		= _buf.payload_rx_mon_rf.block[0].flags;
 
 		ret = 1;
 		break;

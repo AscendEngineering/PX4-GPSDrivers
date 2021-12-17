@@ -46,6 +46,7 @@
 #include "base_station.h"
 #include "rtcm.h"
 #include "../../definitions.h"
+#include <uORB/topics/vehicle_gps_position.h>
 
 #define SBF_CONFIG_FORCE_INPUT "SSSSSSSSSS\n"
 
@@ -309,7 +310,7 @@ class GPSDriverSBF : public GPSBaseStationSupport
 {
 public:
 	GPSDriverSBF(GPSCallbackPtr callback, void *callback_user,
-		     sensor_gps_s *gps_position,
+		     vehicle_gps_position_s *gps_position,
 		     satellite_info_s *satellite_info,
 		     uint8_t dynamic_model);
 
@@ -353,7 +354,7 @@ private:
 	 */
 	bool sendMessageAndWaitForAck(const char *msg, const int timeout);
 
-	sensor_gps_s *_gps_position { nullptr };
+	vehicle_gps_position_s *_gps_position { nullptr };
 	satellite_info_s *_satellite_info { nullptr };
 	uint8_t _dynamic_model{ 7 };
 	uint64_t _last_timestamp_time { 0 };
